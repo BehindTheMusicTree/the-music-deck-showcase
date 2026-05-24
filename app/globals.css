@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #09080d;
+  --surface: #100f18;
+  --card: #16141f;
+  --border: #1e1c2c;
+  --gold: #a87c28;
+  --gold-hi: #c8a040;
+  --text: #d8d4f0;
+  --muted: #6a6480;
+  --dim: #28263a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-garamond), Georgia, serif;
+  font-size: 18px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, nav, button, .cinzel {
+  font-family: var(--font-cinzel), serif;
+  letter-spacing: 0.05em;
+}
+
+.mono {
+  font-family: var(--font-mono), monospace;
+}
