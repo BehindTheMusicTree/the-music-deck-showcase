@@ -27,6 +27,15 @@ export default function Hero() {
         }}
       />
 
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/the-music-deck-mark-full.png"
+        alt="The Music Deck"
+        width={320}
+        height={320}
+        style={{ width: 320, height: 320, marginBottom: "2rem" }}
+      />
+
       <p
         className="mono"
         style={{

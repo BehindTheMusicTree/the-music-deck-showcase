@@ -25,6 +25,13 @@ export const metadata: Metadata = {
   title: "The Music Deck — Collectible Music Card Game",
   description:
     "A collectible music card game where players build lineups, open boosters, and battle through genre-based strategy.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "The Music Deck",
     description:

@@ -10,7 +10,7 @@
     "check:org-assets": "node scripts/check-org-assets.mjs"
   },
   "dependencies": {
-    "@behindthemusictree/assets": "^11.1.0",
+    "@behindthemusictree/assets": "^11.2.1",
     "next": "^15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

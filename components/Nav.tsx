@@ -19,14 +19,31 @@ export default function Nav() {
     >
       <span
         style={{
-          fontFamily: "var(--font-cinzel), serif",
-          fontWeight: 900,
-          fontSize: "1rem",
-          letterSpacing: "0.12em",
-          color: "var(--gold-hi)",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.6rem",
         }}
       >
-        THE MUSIC DECK
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/the-music-deck-mark.svg"
+          alt=""
+          aria-hidden
+          width={32}
+          height={32}
+          style={{ width: 32, height: 32 }}
+        />
+        <span
+          style={{
+            fontFamily: "var(--font-cinzel), serif",
+            fontWeight: 900,
+            fontSize: "1rem",
+            letterSpacing: "0.12em",
+            color: "var(--gold-hi)",
+          }}
+        >
+          THE MUSIC DECK
+        </span>
       </span>
       <a
         href="#contact"
