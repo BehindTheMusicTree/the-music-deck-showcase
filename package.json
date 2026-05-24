@@ -2,9 +2,10 @@
   "name": "the-music-deck-showcase",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.33.2",
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/check-org-assets.mjs && next build",
+    "build": "pnpm run check:org-assets && next build",
     "start": "next start",
     "lint": "next lint",
     "check:org-assets": "node scripts/check-org-assets.mjs"
