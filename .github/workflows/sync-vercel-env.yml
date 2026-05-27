@@ -1,0 +1,92 @@
+# Sync environment variables from GitHub to Vercel (Production and Preview).
+# Run manually: Actions → Sync Vercel env → Run workflow.
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   VERCEL_TOKEN — Vercel → Account Settings → Tokens → Create
+#     https://vercel.com/account/tokens (scope must allow managing this project's env)
+#   VERCEL_PROJECT_ID — Vercel → Project → Settings → General → Project ID
+#   GH_PACKAGES_TOKEN — GitHub PAT (read:packages or fine-grained Packages → Read).
+#     Synced to Vercel as NPM_TOKEN (sensitive) for npm install of @behindthemusictree/*.
+name: Sync Vercel env
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync-production:
+    name: Sync to Vercel production
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      NPM_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+    steps:
+      - name: Validate required env vars
+        run: |
+          missing=""
+          [ -z "$VERCEL_TOKEN" ] && missing="$missing VERCEL_TOKEN"
+          [ -z "$VERCEL_PROJECT_ID" ] && missing="$missing VERCEL_PROJECT_ID"
+          [ -z "$NPM_TOKEN" ] && missing="$missing GH_PACKAGES_TOKEN"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing or empty (repo secrets):$missing"
+            exit 1
+          fi
+          echo "All required env vars are set."
+
+      - name: Sync to Vercel production
+        run: |
+          set -e
+          sync_var() {
+            local value="$1"
+            local key="$2"
+            local vtype="${3:-plain}"
+            [ -z "$value" ] && return 0
+            echo "Syncing $key to production..."
+            body=$(jq -n --arg key "$key" --arg value "$value" --arg vtype "$vtype" \
+              '{key:$key, value:$value, type:$vtype, target:["production"]}')
+            curl -sS -X POST "https://api.vercel.com/v10/projects/${VERCEL_PROJECT_ID}/env?upsert=true" \
+              -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+              -H "Content-Type: application/json" \
+              -d "$body"
+          }
+          sync_var "$NPM_TOKEN" "NPM_TOKEN" "sensitive"
+          echo "Production sync done."
+
+  sync-preview:
+    name: Sync to Vercel preview
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      NPM_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+    steps:
+      - name: Validate required env vars
+        run: |
+          missing=""
+          [ -z "$VERCEL_TOKEN" ] && missing="$missing VERCEL_TOKEN"
+          [ -z "$VERCEL_PROJECT_ID" ] && missing="$missing VERCEL_PROJECT_ID"
+          [ -z "$NPM_TOKEN" ] && missing="$missing GH_PACKAGES_TOKEN"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing or empty (repo secrets):$missing"
+            exit 1
+          fi
+          echo "All required env vars are set."
+
+      - name: Sync to Vercel preview
+        run: |
+          set -e
+          sync_var() {
+            local value="$1"
+            local key="$2"
+            local vtype="${3:-plain}"
+            [ -z "$value" ] && return 0
+            echo "Syncing $key to preview..."
+            body=$(jq -n --arg key "$key" --arg value "$value" --arg vtype "$vtype" \
+              '{key:$key, value:$value, type:$vtype, target:["preview"]}')
+            curl -sS -X POST "https://api.vercel.com/v10/projects/${VERCEL_PROJECT_ID}/env?upsert=true" \
+              -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+              -H "Content-Type: application/json" \
+              -d "$body"
+          }
+          sync_var "$NPM_TOKEN" "NPM_TOKEN" "sensitive"
+          echo "Preview sync done."

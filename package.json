@@ -5,10 +5,9 @@
   "packageManager": "pnpm@10.33.2",
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm run check:org-assets && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "check:org-assets": "node scripts/check-org-assets.mjs"
+    "lint": "next lint"
   },
   "dependencies": {
     "@behindthemusictree/assets": "^11.2.1",
